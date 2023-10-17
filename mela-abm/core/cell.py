@@ -6,8 +6,6 @@ import numpy as np
 import random
 
 
-
-
 class Cell:
     """Class to represent each cell in a simulation.
 
