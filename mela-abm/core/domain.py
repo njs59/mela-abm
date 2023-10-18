@@ -28,28 +28,27 @@ class Domain:
         """
         return ("Domain")
 
-    def create_uniform_1D_grid(low, high, no_steps):
+    def create_uniform_1D_grid(low, high):
         """Define a uniformly-spaced grid that can be used to discretize a space.
 
         Parameters
         ----------
-        low : float
+        low : int
         Lower bounds for each dimension of the continuous space.
-        high : float
+        high : int
         Upper bounds for each dimension of the continuous space.
-        no_steps : int
-        Number of steps in the given dimension
 
         Returns
         -------
         grid_1D : list of array_like
         A list of arrays containing split points for each dimension.
         """
-        grid_1D = np.linspace(low, high, no_steps)
+        steps = high - low + 1
+        grid_1D = np.linspace(low, high, steps)
 
         return [grid_1D]
 
-    def create_uniform_2D_grid(low_x, high_x, no_steps_x, low_y, high_y, no_steps_y):
+    def create_uniform_2D_grid(low_x, high_x, low_y, high_y):
         """Define a uniformly-spaced grid that can be used to discretize a 2D space.
 
         Parameters
@@ -66,12 +65,14 @@ class Domain:
         grid_2D : list of array_like
         A list of arrays containing split points for each dimension.
         """
-        grid_x = np.linspace(low_x, high_x, no_steps_x)
-        grid_y = np.linspace(low_y, high_y, no_steps_y)
+        steps_x = high_x - low_x + 1
+        steps_y = high_y - low_y + 1
+        grid_x = np.linspace(low_x, high_x, steps_x)
+        grid_y = np.linspace(low_y, high_y, steps_y)
 
         
-        for i in range(no_steps_x):
-             for j in range(no_steps_y):
+        for i in range(steps_x):
+             for j in range(steps_y):
                   if i==0 and j==0:
                        grid_2D = np.array([grid_x[i], grid_y[j]])
                   else:
@@ -80,7 +81,7 @@ class Domain:
 
         return grid_2D
 
-    def create_uniform_3D_grid(low_x, high_x, no_steps_x, low_y, high_y, no_steps_y, low_z, high_z, no_steps_z):
+    def create_uniform_3D_grid(low_x, high_x, low_y, high_y, low_z, high_z):
         """Define a uniformly-spaced grid that can be used to discretize a 2D space.
 
         Parameters
@@ -97,10 +98,23 @@ class Domain:
         grid_3D : list of array_like
         A list of arrays containing split points for each dimension.
         """
-        grid_x = np.linspace(low_x, high_x, no_steps_x)
-        grid_y = np.linspace(low_y, high_y, no_steps_y)
-        grid_z = np.linspace(low_z, high_z, no_steps_z)
+        steps_x = high_x - low_x + 1
+        steps_y = high_y - low_y + 1
+        steps_z = high_z - low_z + 1
 
-        grid_3D = [grid_x, grid_y, grid_z]
+        grid_x = np.linspace(low_x, high_x, steps_x)
+        grid_y = np.linspace(low_y, high_y, steps_y)
+        grid_z = np.linspace(low_z, high_z, steps_z)
 
-        return [grid_3D]
+
+        
+        for i in range(steps_x):
+             for j in range(steps_y):
+                  for k in range(steps_z):
+                    if i==0 and j==0 and k==0:
+                       grid_3D = np.array([grid_x[i], grid_y[j]])
+                    else:
+                        row_to_add = [grid_x[i], grid_y[j], grid_z[k]]
+                        grid_3D = np.vstack([grid_3D, [row_to_add]])
+
+        return grid_3D
