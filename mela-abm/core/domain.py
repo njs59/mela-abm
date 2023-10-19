@@ -65,14 +65,13 @@ class Domain:
         grid_2D : list of array_like
         A list of arrays containing split points for each dimension.
         """
-        steps_x = high_x - low_x + 1
-        steps_y = high_y - low_y + 1
-        grid_x = np.linspace(low_x, high_x, steps_x)
-        grid_y = np.linspace(low_y, high_y, steps_y)
+
+        grid_x = range(low_x, high_x)
+        grid_y = range(low_y, high_y)
 
         
-        for i in range(steps_x):
-             for j in range(steps_y):
+        for i in grid_x:
+             for j in grid_y:
                   if i==0 and j==0:
                        grid_2D = np.array([grid_x[i], grid_y[j]])
                   else:
