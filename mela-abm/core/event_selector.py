@@ -28,9 +28,15 @@ def event_selector(cell, cell_list):
         # Proliferation will be attempted
         print('Pro')
         cell_out = proliferate.proliferation_attempt(cell, cell_list)
+
         
-        out_needs_flip = cell_out.to_frame()
-        out = out_needs_flip.T
+        # out_needs_flip = cell_out.to_frame()
+        # out = out_needs_flip.T
+
+        out  = cell_out
+        hi = 1
+
+
 
     elif r < chance_pro + chance_move:
     # Movement will be attempted

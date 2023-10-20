@@ -7,18 +7,25 @@ import pandas as pd
 
 import initial_state
 import event_selector
+import parameters
 
 ## Parameters to change
-xmin = 0
-xmax = 10
-ymin = 0
-ymax = 10
-initial_number_cells = 90
+# global x_min, x_max, y_min, y_max
+# x_min = 0
+# x_max = 10
+# y_min = 0
+# y_max = 10
+x_min = parameters.x_min
+x_max = parameters.x_max
+y_min = parameters.y_min
+y_max = parameters.y_max
+
+initial_number_cells = 5
 timesteps = 3
 
 ## Initialise
 
-initial_state.initialise_2D(initial_number_cells, xmin,xmax,ymin,ymax)
+initial_state.initialise_2D(initial_number_cells, x_min,x_max,y_min,y_max)
 
 ## Loop over event selector for each cell at each timestep
 
@@ -57,7 +64,10 @@ for i in range (timesteps):
     # Event selector
     for j in range(cells_current.shape[0]):
 
-        post_event = event_selector.event_selector(cells_current.iloc[j,:], cells_current)
+        # Remove cell of interest before event
+        cell_to_compare = cells_current.iloc[j,:]
+        list_for_step = cells_current.drop([j])
+        post_event = event_selector.event_selector(cell_to_compare, list_for_step)
         post_event_row_ongoing = post_event.shape[0]
 
         if j == 0:
