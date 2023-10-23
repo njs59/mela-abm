@@ -62,23 +62,28 @@ class Domain:
 
         Returns
         -------
-        grid_2D : list of array_like
+        avaliable_locations : list of array_like
         A list of arrays containing split points for each dimension.
+
+        grid_2D: array of zeros of size of grid
         """
 
-        grid_x = range(low_x, high_x)
-        grid_y = range(low_y, high_y)
+        grid_x = range(low_x, high_x + 1)
+        grid_y = range(low_y, high_y + 1)
 
         
         for i in grid_x:
              for j in grid_y:
                   if i==0 and j==0:
-                       grid_2D = np.array([grid_x[i], grid_y[j]])
+                       avaliable_locations = np.array([grid_x[i], grid_y[j]])
                   else:
                     row_to_add = [grid_x[i], grid_y[j]]
-                    grid_2D = np.vstack([grid_2D, [row_to_add]])
+                    avaliable_locations = np.vstack([avaliable_locations, [row_to_add]])
 
-        return grid_2D
+
+        grid_2D = np.zeros((high_x - low_x + 1, high_y - low_y +1))
+
+        return avaliable_locations, grid_2D
 
     def create_uniform_3D_grid(low_x, high_x, low_y, high_y, low_z, high_z):
         """Define a uniformly-spaced grid that can be used to discretize a 2D space.

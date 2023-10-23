@@ -14,7 +14,7 @@ training_cell_list = "Cell, Phenotype = Proliferative, Location = [[8. 0.]].," +
 "Cell, Phenotype = Proliferative, Location = [[8. 1.]]."
 
 
-def event_selector(cell, cell_list):
+def event_selector(cell, cell_list, grid_2D):
     r = random.random()
 
     # cols = ['Name', 'Phenotype', 'Location', 'Time']
@@ -27,14 +27,8 @@ def event_selector(cell, cell_list):
     if r < chance_pro:
         # Proliferation will be attempted
         print('Pro')
-        cell_out = proliferate.proliferation_attempt(cell, cell_list)
+        cell_out, grid_2D_new = proliferate.proliferation_attempt(cell, cell_list, grid_2D)
 
-        
-        # out_needs_flip = cell_out.to_frame()
-        # out = out_needs_flip.T
-
-        out  = cell_out
-        hi = 1
 
 
 
@@ -44,19 +38,19 @@ def event_selector(cell, cell_list):
         # print(cell.shape)
 
         out_needs_flip = cell.to_frame()
-        out = out_needs_flip.T
+        cell_out = out_needs_flip.T
         
     
     else:
     # Nothing will happen to given cell
 
         out_needs_flip = cell.to_frame()
-        out = out_needs_flip.T
+        cell_out = out_needs_flip.T
 
     # print(out.shape)
     # print('Out', out)
     # print('Hit')
     
-    return out
+    return cell_out, grid_2D_new
 
 # event_selector(training_cell, cell_list)

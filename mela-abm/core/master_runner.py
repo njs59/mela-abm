@@ -25,11 +25,11 @@ timesteps = 3
 
 ## Initialise
 
-initial_state.initialise_2D(initial_number_cells, x_min,x_max,y_min,y_max)
+cells_current, grid_2D = initial_state.initialise_2D(initial_number_cells, x_min,x_max,y_min,y_max)
 
 ## Loop over event selector for each cell at each timestep
 
-cells_current = pd.read_csv('initial_2D.csv')  
+# cells_current = pd.read_csv('initial_2D.csv')  
 
 cols = ['Phenotype', 'Location']
 
@@ -59,18 +59,21 @@ for i in range (timesteps):
     else:
         cells_current = cells_after.sample(frac = 1)
 
+    cells_to_loop = cells_current.shape[0]
+
+    cells_current['new_col'] = range(1, cells_to_loop + 1)
     ## Apply changes calls here
     
     # Event selector
-    for j in range(cells_current.shape[0]):
+    for j in range(cells_to_loop):
 
         # Remove cell of interest before event
-        cell_to_compare = cells_current.iloc[j,:]
-        list_for_step = cells_current.drop([j])
-        post_event = event_selector.event_selector(cell_to_compare, list_for_step)
+        cell_to_compare = cells_current.iloc[0,:]
+        list_for_step = cells_current.drop(cells_current[cells_current.new_col==j+1].index)
+        post_event, grid_2D_after = event_selector.event_selector(cell_to_compare, list_for_step, grid_2D)
         post_event_row_ongoing = post_event.shape[0]
 
-        cells_current = pd.concat([cells_current, post_event])
+        cells_current = pd.concat([list_for_step, post_event])
 
     cells_new = cells_current
     count_new_row = cells_current.shape[0]
@@ -78,6 +81,8 @@ for i in range (timesteps):
     cells_new['Time'] = current_time
     # cell_output.concat(cells_current)
     cells_after = pd.DataFrame(cells_new, columns=cols)
+
+    cells_current = cells_after
 
 
     cell_output = pd.concat([cell_output, cells_new])

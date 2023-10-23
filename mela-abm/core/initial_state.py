@@ -7,7 +7,7 @@ from domain import Domain
 
 def initialise_2D(initial_number_cells, xmin,xmax,ymin,ymax):
 
-    avaliable_spaces = Domain.create_uniform_2D_grid(xmin, xmax, ymin, ymax)
+    avaliable_spaces, grid_2D = Domain.create_uniform_2D_grid(xmin, xmax, ymin, ymax)
     num_space = np.shape(avaliable_spaces)
     # print('Domain', avaliable_spaces)
     print('Number of spaces', num_space[1])
@@ -25,6 +25,9 @@ def initialise_2D(initial_number_cells, xmin,xmax,ymin,ymax):
         chance_of_invasive = 0.5
         new_cell = Cell(False,[0,0])
         avaliable_spaces, selected_location = new_cell.set_initial_location(avaliable_spaces)
+        # Set array value corresponding to location to be 1 for occupied
+        grid_2D[selected_location[0][0],selected_location[0][1]] = 1
+        
         phenotype = new_cell.set_initial_phenotype(chance_of_invasive)
 
         cell_phenotypes = np.append(cell_phenotypes, phenotype)
@@ -41,3 +44,5 @@ def initialise_2D(initial_number_cells, xmin,xmax,ymin,ymax):
     cells_after = pd.DataFrame(list_of_tuples, columns=cols)
     cells_after
     cells_after.to_csv('initial_2D.csv', index=True, header=True)
+
+    return cells_after, grid_2D
