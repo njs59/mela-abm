@@ -70,16 +70,10 @@ for i in range (timesteps):
         post_event = event_selector.event_selector(cell_to_compare, list_for_step)
         post_event_row_ongoing = post_event.shape[0]
 
-        if j == 0:
-            cells_new = post_event
-            ticker = 1
-        else:
-            count_new_row_ongoing = cells_new.shape[0]
-            cells_new = np.append(cells_new, post_event, axis=0)
-            ticker += 1
-            count_new_row_ongoing = cells_new.shape[0]
+        cells_current = pd.concat([cells_current, post_event])
 
-    count_new_row = cells_new.shape[0]
+    cells_new = cells_current
+    count_new_row = cells_current.shape[0]
     current_time = np.full((count_new_row,1), timestep_current)
     cells_new['Time'] = current_time
     # cell_output.concat(cells_current)

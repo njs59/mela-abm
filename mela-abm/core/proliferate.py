@@ -35,13 +35,22 @@ def proliferation_attempt(cell, cell_list):
 
     if len(pro_possible) == 0:
         # Case for no possible proliferation target sites, then nothing happens
-        new_cells = cell
+        new_cells = pd.DataFrame()
+        new_cells = new_cells.append(cell)
     else:
-        pro_choice = random.choice(pro_possible)
+        # Select a direction to attempt to proliferate in 
+        attempted_direction = random.randint(1, 8)
 
-        new_cells = proliferative_update(cell, x,y, pro_choice)
-    # cell = cell
-    hi = 1
+        # If there is a space in that direction then proliferation occurs
+        if attempted_direction in pro_possible:        
+            pro_choice = random.choice(pro_possible)
+            new_cells = proliferative_update(cell, x,y, pro_choice)
+
+        # No space to proliferate so nothing happens
+        else:
+            new_cells = pd.DataFrame()
+            new_cells = new_cells.append(cell)
+
     return new_cells
 
 
