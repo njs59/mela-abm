@@ -30,7 +30,7 @@ def proliferation_attempt(cell, cell_list, grid_2D):
     if random_direction == 0:
         ## North
         print('North')
-        if y == 0:
+        if y == y_min:
             ## At northern edge so proliferation fails
             out_needs_flip = cell.to_frame()
             new_cells = out_needs_flip.T
@@ -120,7 +120,7 @@ def proliferation_attempt(cell, cell_list, grid_2D):
     elif random_direction == 3:
         ## West
         print('West')
-        if x == 0:
+        if x == x_min:
             ## At western edge so proliferation fails
             out_needs_flip = cell.to_frame()
             new_cells = out_needs_flip.T

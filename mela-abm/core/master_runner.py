@@ -21,7 +21,7 @@ y_min = parameters.y_min
 y_max = parameters.y_max
 
 initial_number_cells = 5
-timesteps = 3
+timesteps = 5
 
 ## Initialise
 
