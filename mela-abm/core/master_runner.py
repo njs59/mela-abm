@@ -2,6 +2,7 @@
 Main script to run
 '''
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -91,3 +92,5 @@ for i in range (timesteps):
 # cell_output.append(cells_current)
 
 cell_output.to_csv('output_2D.csv', index=True, header=True)
+plt.imshow(grid_2D_after, interpolation='none')
+plt.show()

@@ -49,6 +49,7 @@ def movement_attempt(cell, cell_list, grid_2D):
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D[target_x][target_y] = 1
+                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('N success')
 
@@ -79,6 +80,7 @@ def movement_attempt(cell, cell_list, grid_2D):
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D[target_x][target_y] = 1
+                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('E success')
 
@@ -109,6 +111,7 @@ def movement_attempt(cell, cell_list, grid_2D):
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D[target_x][target_y] = 1
+                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('S success')
 
@@ -139,6 +142,7 @@ def movement_attempt(cell, cell_list, grid_2D):
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D[target_x][target_y] = 1
+                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('W success')
 
