@@ -22,7 +22,7 @@ y_min = parameters.y_min
 y_max = parameters.y_max
 
 initial_number_cells = 5
-timesteps = 5
+timesteps = 5000
 
 ## Initialise
 
@@ -85,8 +85,12 @@ for i in range (timesteps):
 
     cells_current = cells_after
 
+    if timestep_current % 100 == 0:
+        cell_output = pd.concat([cell_output, cells_new])
+        plt.imshow(grid_2D_after, interpolation='none')
+        plt.show()
 
-    cell_output = pd.concat([cell_output, cells_new])
+
 
 
 # cell_output.append(cells_current)

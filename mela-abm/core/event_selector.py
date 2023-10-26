@@ -20,8 +20,8 @@ def event_selector(cell, cell_list, grid_2D):
     # cols = ['Name', 'Phenotype', 'Location', 'Time']
     cols = ['Phenotype', 'Location']
 
-    chance_pro = 0.0
-    chance_move = 1.0
+    chance_pro = 0.05
+    chance_move = 0.5
 
 
     if r < chance_pro:
@@ -47,6 +47,7 @@ def event_selector(cell, cell_list, grid_2D):
 
         out_needs_flip = cell.to_frame()
         cell_out = out_needs_flip.T
+        grid_2D_new = grid_2D
 
     # print(out.shape)
     # print('Out', out)
