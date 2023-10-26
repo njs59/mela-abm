@@ -73,6 +73,7 @@ for i in range (timesteps):
         list_for_step = cells_current.drop(cells_current[cells_current.new_col==j+1].index)
         post_event, grid_2D_after = event_selector.event_selector(cell_to_compare, list_for_step, grid_2D)
         post_event_row_ongoing = post_event.shape[0]
+        grid_2D = grid_2D_after
 
         cells_current = pd.concat([list_for_step, post_event])
 
