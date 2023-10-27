@@ -6,10 +6,11 @@ import pandas as pd
 import numpy as np
 import random
 
-def movement_attempt(cell, cell_list, grid_2D):
+def movement_attempt(cell, grid_2D):
     # print(json.loads(cell[2].replace(' ',',')))
     # x, y = json.loads(cell["Location"].replace(' ',','))
     [x, y] = cell["Location"]
+    # print('Move')
 
     grid_shape = np.shape(grid_2D)
     x_min = 0
@@ -24,13 +25,13 @@ def movement_attempt(cell, cell_list, grid_2D):
 
     if random_direction == 0:
         ## North
-        print('North')
+        # print('North')
         if y == y_min:
             ## At northern edge so movement fails
             out_needs_flip = cell.to_frame()
             new_cells = out_needs_flip.T
             grid_2D_new = grid_2D
-            print('N fail 1')
+            # print('N fail 1')
 
         else:
             ## Find target coordinates
@@ -43,23 +44,23 @@ def movement_attempt(cell, cell_list, grid_2D):
                 out_needs_flip = cell.to_frame()
                 new_cells = out_needs_flip.T
                 grid_2D_new = grid_2D
-                print('N fail 2')
+                # print('N fail 2')
 
             else:
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D_new = grid_2D
-                print('N success')
+                # print('N success')
 
     elif random_direction == 1:
         ## East
-        print('East')
+        # print('East')
         if x == x_max:
             ## At eastern edge so proliferation fails
             out_needs_flip = cell.to_frame()
             new_cells = out_needs_flip.T
             grid_2D_new = grid_2D
-            print('E fail 1')
+            # print('E fail 1')
 
         else:
             ## Find target coordinates
@@ -72,23 +73,23 @@ def movement_attempt(cell, cell_list, grid_2D):
                 out_needs_flip = cell.to_frame()
                 new_cells = out_needs_flip.T
                 grid_2D_new = grid_2D
-                print('E fail 2')
+                # print('E fail 2')
 
             else:
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D_new = grid_2D
-                print('E success')
+                # print('E success')
 
     elif random_direction == 2:
         ## South
-        print('South')
+        # print('South')
         if y == y_max:
             ## At southern edge so proliferation fails
             out_needs_flip = cell.to_frame()
             new_cells = out_needs_flip.T
             grid_2D_new = grid_2D
-            print('S fail 1')
+            # print('S fail 1')
 
         else:
             ## Find target coordinates
@@ -101,23 +102,23 @@ def movement_attempt(cell, cell_list, grid_2D):
                 out_needs_flip = cell.to_frame()
                 new_cells = out_needs_flip.T
                 grid_2D_new = grid_2D
-                print('S fail 2')
+                # print('S fail 2')
 
             else:
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
                 grid_2D_new = grid_2D
-                print('S success')
+                # print('S success')
 
     elif random_direction == 3:
         ## West
-        print('West')
+        # print('West')
         if x == x_min:
             ## At western edge so proliferation fails
             out_needs_flip = cell.to_frame()
             new_cells = out_needs_flip.T
             grid_2D_new = grid_2D
-            print('W fail 1')
+            # print('W fail 1')
 
         else:
             ## Find target coordinates
@@ -130,13 +131,13 @@ def movement_attempt(cell, cell_list, grid_2D):
                 out_needs_flip = cell.to_frame()
                 new_cells = out_needs_flip.T
                 grid_2D_new = grid_2D
-                print('W fail 2')
+                # print('W fail 2')
 
             else:
                 ## Add daughter cell to target location
                 new_cells, grid_2D_new = movement_comparison(cell, target_x,target_y, grid_2D)
                 # grid_2D_new = grid_2D
-                print('W success')
+                # print('W success')
 
     return new_cells, grid_2D_new
 
@@ -156,12 +157,8 @@ def movement_comparison(cell, target_x, target_y, grid_2D):
     neighbours_before = neighbours_value(x,y,grid_2D)
     neighbours_after = neighbours_value(target_x,target_y,grid_2D)
 
-    if neighbours_before > neighbours_after:
-       # Do nothing
-        new_cells_df = new_cells_df.append(cell) 
-        grid_2D[x][y] = 1
-
-    else:
+    # if neighbours_before == 0 or neighbours_after > 0:
+    if neighbours_before < neighbours_after:    
         # move the cell
         selected_location = [target_x, target_y]
         phenotype = cell.Phenotype
@@ -172,7 +169,14 @@ def movement_comparison(cell, target_x, target_y, grid_2D):
         # Line below prints over cell not a problem as output is not affected but 
         # it is annoying
         cell_adding.loc[:].at['Location']= selected_location
-        new_cells_df = new_cells_df.append(cell_adding)
+        # new_cells_df = new_cells_df.append(cell_adding)
+        new_cells_df = pd.concat([new_cells_df, cell_adding])
+    # elif neighbours_before > 0 and neighbours_after == 0:
+    else:
+       # Do nothing
+        # new_cells_df = new_cells_df.append(cell) 
+        new_cells_df = pd.concat([new_cells_df, cell])
+        grid_2D[x][y] = 1
 
     return new_cells_df, grid_2D
 

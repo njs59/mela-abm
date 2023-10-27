@@ -14,28 +14,28 @@ training_cell_list = "Cell, Phenotype = Proliferative, Location = [[8. 0.]].," +
 "Cell, Phenotype = Proliferative, Location = [[8. 1.]]."
 
 
-def event_selector(cell, cell_list, grid_2D):
+def event_selector(cell, grid_2D):
     r = random.random()
 
     # cols = ['Name', 'Phenotype', 'Location', 'Time']
     cols = ['Phenotype', 'Location']
 
-    chance_pro = 0.05
-    chance_move = 0.5
+    chance_pro = 0.01
+    chance_move = 0.99
 
 
     if r < chance_pro:
         # Proliferation will be attempted
-        print('Pro')
-        cell_out, grid_2D_new = proliferate.proliferation_attempt(cell, cell_list, grid_2D)
+        # print('Pro')
+        cell_out, grid_2D_new = proliferate.proliferation_attempt(cell, grid_2D)
 
 
 
 
     elif r < chance_pro + chance_move:
     # Movement will be attempted
-        print('Move')
-        cell_out, grid_2D_new = move.movement_attempt(cell, cell_list, grid_2D)
+        # print('Move')
+        cell_out, grid_2D_new = move.movement_attempt(cell, grid_2D)
 
 
         out_needs_flip = cell.to_frame()

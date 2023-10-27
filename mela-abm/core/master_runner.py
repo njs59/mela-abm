@@ -21,8 +21,9 @@ x_max = parameters.x_max
 y_min = parameters.y_min
 y_max = parameters.y_max
 
-initial_number_cells = 5
-timesteps = 5000
+initial_number_cells = 10
+timesteps = 500
+frame_num = 0
 
 ## Initialise
 
@@ -58,6 +59,8 @@ for i in range (timesteps):
     if i == 0:
         cells_current = cells_current.sample(frac = 1)
     else:
+        no_cells = cells_after.shape[0]
+        cells_after.index = list(range(0, no_cells))
         cells_current = cells_after.sample(frac = 1)
 
     cells_to_loop = cells_current.shape[0]
@@ -70,12 +73,19 @@ for i in range (timesteps):
 
         # Remove cell of interest before event
         cell_to_compare = cells_current.iloc[0,:]
-        list_for_step = cells_current.drop(cells_current[cells_current.new_col==j+1].index)
-        post_event, grid_2D_after = event_selector.event_selector(cell_to_compare, list_for_step, grid_2D)
+        ## This dops too many rows
+        # list_for_step = cells_current.drop(cells_current[cells_current.new_col==j+1].index)
+        list_for_step = cells_current
+        list_for_step.drop(index=list_for_step.index[0], axis=0, inplace=True)
+        
+        post_event, grid_2D_after = event_selector.event_selector(cell_to_compare, grid_2D)
         post_event_row_ongoing = post_event.shape[0]
         grid_2D = grid_2D_after
 
+        # print('Cell list,', pd.concat([list_for_step, post_event]))
+
         cells_current = pd.concat([list_for_step, post_event])
+        # print('Cells', cells_current.shape[0])
 
     cells_new = cells_current
     count_new_row = cells_current.shape[0]
@@ -89,7 +99,9 @@ for i in range (timesteps):
     if timestep_current % 100 == 0:
         cell_output = pd.concat([cell_output, cells_new])
         plt.imshow(grid_2D_after, interpolation='none')
-        plt.show()
+        frame_num += 1
+        plt.savefig(f'frame-{frame_num:03d}.png',dpi=300)
+        # plt.show()
 
 
 
