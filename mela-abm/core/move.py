@@ -48,8 +48,6 @@ def movement_attempt(cell, cell_list, grid_2D):
             else:
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
-                grid_2D[target_x][target_y] = 1
-                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('N success')
 
@@ -79,8 +77,6 @@ def movement_attempt(cell, cell_list, grid_2D):
             else:
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
-                grid_2D[target_x][target_y] = 1
-                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('E success')
 
@@ -110,8 +106,6 @@ def movement_attempt(cell, cell_list, grid_2D):
             else:
                 ## Add daughter cell to target location
                 new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
-                grid_2D[target_x][target_y] = 1
-                grid_2D[x][y] = 0
                 grid_2D_new = grid_2D
                 print('S success')
 
@@ -140,10 +134,8 @@ def movement_attempt(cell, cell_list, grid_2D):
 
             else:
                 ## Add daughter cell to target location
-                new_cells = movement_comparison(cell, target_x,target_y, grid_2D)
-                grid_2D[target_x][target_y] = 1
-                grid_2D[x][y] = 0
-                grid_2D_new = grid_2D
+                new_cells, grid_2D_new = movement_comparison(cell, target_x,target_y, grid_2D)
+                # grid_2D_new = grid_2D
                 print('W success')
 
     return new_cells, grid_2D_new
@@ -160,13 +152,14 @@ def movement_comparison(cell, target_x, target_y, grid_2D):
     new_cells_df = pd.DataFrame()
 
     [x, y] = cell["Location"]
-
+    grid_2D[x][y] = 0
     neighbours_before = neighbours_value(x,y,grid_2D)
     neighbours_after = neighbours_value(target_x,target_y,grid_2D)
 
     if neighbours_before > neighbours_after:
        # Do nothing
         new_cells_df = new_cells_df.append(cell) 
+        grid_2D[x][y] = 1
 
     else:
         # move the cell
@@ -174,12 +167,14 @@ def movement_comparison(cell, target_x, target_y, grid_2D):
         phenotype = cell.Phenotype
         cell_adding = cell
 
+        grid_2D[target_x][target_y] = 1
+
         # Line below prints over cell not a problem as output is not affected but 
         # it is annoying
         cell_adding.loc[:].at['Location']= selected_location
         new_cells_df = new_cells_df.append(cell_adding)
 
-    return new_cells_df
+    return new_cells_df, grid_2D
 
 
 def neighbours_value(x,y, grid_2D):
